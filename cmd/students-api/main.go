@@ -7,19 +7,20 @@ import (
 
 	"github.com/himsrdr/students-api/internal/config"
 	student "github.com/himsrdr/students-api/internal/http/handlers/students"
-	"github.com/himsrdr/students-api/internal/storage/sqlite"
+	"github.com/himsrdr/students-api/internal/storage/db"
 )
 
 func main() {
 	cfg := config.Mustload()
 
-	_, err := sqlite.NewSqlite(cfg)
+	storage, err := db.New(cfg)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	router := http.NewServeMux()
-	router.HandleFunc("POST /api/students", student.Create())
+	router.HandleFunc("POST /api/students", student.Create(storage))
+	router.HandleFunc("GET /api/students/{id}", student.Get(storage))
 
 	server := http.Server{
 		Addr:    cfg.HttpServer.Address,
