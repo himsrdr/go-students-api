@@ -42,12 +42,14 @@ func Put(storage storage.Storage) http.HandlerFunc {
 		}
 		rowId, err := strconv.ParseInt(id, 10, 10)
 		if err != nil {
+			response.WriteJson(w, http.StatusInternalServerError, map[string]string{"Error": err.Error()})
 			fmt.Println(err)
 			return
 		}
 		retId, err := storage.UpdateStudentEmailById(rowId, email)
 		if err != nil {
 			fmt.Println(err)
+			response.WriteJson(w, http.StatusInternalServerError, map[string]error{"Error": err})
 			return
 		}
 		response.WriteJson(w, http.StatusAccepted, map[string]int64{"success id : ": retId})
