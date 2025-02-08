@@ -16,6 +16,7 @@ type Config struct {
 	Env         string     `yaml:"env" env:"ENV" env-required:"true" env-default:"prod"`
 	StoragePath string     `yaml:"storage_path" env-required:"true"`
 	HttpServer  HttpServer `yaml:"http_server"`
+	PostgresUrl string     `yaml:"postgres_url"`
 }
 
 func Mustload() *Config {

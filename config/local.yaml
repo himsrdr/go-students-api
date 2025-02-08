@@ -2,3 +2,4 @@ env: "dev"
 storage_path : "storage/storage.db"
 http_server :
   address : "localhost:8082"
+postgres_url : "postgres://postgres:postgres@localhost:5432/postgres?sslmode=disable"

@@ -4,7 +4,7 @@ import (
 	"database/sql"
 
 	"github.com/himsrdr/students-api/internal/config"
-	_ "github.com/mattn/go-sqlite3"
+	_ "github.com/lib/pq"
 )
 
 type Sqlite struct {
@@ -12,15 +12,17 @@ type Sqlite struct {
 }
 
 func NewSqlite(cfg *config.Config) (*Sqlite, error) {
-	db, err := sql.Open("sqlite3", cfg.StoragePath)
+	db, err := sql.Open("postgres", cfg.PostgresUrl)
 	if err != nil {
 		return nil, err
 	}
-	_, err = db.Exec(`CREATE TABLE IF NOT EXISTS STUDENTS(id INTEGER Primary key AutoIncreament ,
-	 Name Text ,
-	  age integer ,
-	   email text
-	)`)
+	_, err = db.Exec(`CREATE TABLE IF NOT EXISTS STUDENTS (
+    id SERIAL PRIMARY KEY,  -- Use SERIAL for auto-incrementing IDs
+    Name TEXT,
+    age INTEGER,
+    email TEXT
+);
+`)
 	if err != nil {
 		return nil, err
 	}
