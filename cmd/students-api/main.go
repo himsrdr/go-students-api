@@ -17,10 +17,11 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
+	defer storage.DB.Close()
 	router := http.NewServeMux()
 	router.HandleFunc("POST /api/students", student.Create(storage))
 	router.HandleFunc("GET /api/students/{id}", student.Get(storage))
+	router.HandleFunc("PUT /api/students/{id}", student.Put(storage))
 
 	server := http.Server{
 		Addr:    cfg.HttpServer.Address,

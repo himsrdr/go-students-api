@@ -2,6 +2,7 @@ package db
 
 import (
 	"database/sql"
+	"fmt"
 
 	"github.com/himsrdr/students-api/internal/config"
 	types "github.com/himsrdr/students-api/internal/type"
@@ -32,6 +33,18 @@ func New(cfg *config.Config) (*DB, error) {
 		DB:  db,
 		cfg: cfg,
 	}, nil
+}
+
+func (d *DB) UpdateStudentEmailById(id int64, email types.Studentupdate) (int64, error) {
+	emailId := email.Email
+	query := "Update students set email = $1 where id = $2  RETURNING id;"
+	var rowId int64
+	err := d.DB.QueryRow(query, emailId, id).Scan(&rowId)
+	if err != nil {
+		fmt.Println("error ", err)
+		return 0, err
+	}
+	return rowId, nil
 }
 
 func (d *DB) GetStudentById(id int64) (types.Student, error) {
