@@ -7,11 +7,11 @@ import (
 	_ "github.com/lib/pq"
 )
 
-type Sqlite struct {
+type DB struct {
 	DB *sql.DB
 }
 
-func NewSqlite(cfg *config.Config) (*Sqlite, error) {
+func NewSqlite(cfg *config.Config) (*DB, error) {
 	db, err := sql.Open("postgres", cfg.PostgresUrl)
 	if err != nil {
 		return nil, err
@@ -26,7 +26,7 @@ func NewSqlite(cfg *config.Config) (*Sqlite, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &Sqlite{
+	return &DB{
 		DB: db,
 	}, nil
 
