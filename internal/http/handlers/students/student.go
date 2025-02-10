@@ -30,6 +30,20 @@ func Get(storage storage.Storage) http.HandlerFunc {
 
 }
 
+func Delete(storage storage.Storage) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		id := r.PathValue("id")
+		rowId, err := strconv.ParseInt(id, 10, 10)
+		if err != nil {
+			response.WriteJson(w, http.StatusInternalServerError, map[string]error{"Error : ": err})
+		}
+		err = storage.DeleteStudentById(rowId)
+		if err != nil {
+			response.WriteJson(w, http.StatusInternalServerError, map[string]error{"Error : ": err})
+		}
+	}
+}
+
 func Put(storage storage.Storage) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 

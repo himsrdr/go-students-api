@@ -35,6 +35,15 @@ func New(cfg *config.Config) (*DB, error) {
 	}, nil
 }
 
+func (d *DB) DeleteStudentById(id int64) error {
+	query := "delete from students where id = $1"
+	_, err := d.DB.Query(query, id)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func (d *DB) UpdateStudentEmailById(id int64, email types.Studentupdate) (int64, error) {
 	emailId := email.Email
 	query := "Update students set email = $1 where id = $2  RETURNING id;"
